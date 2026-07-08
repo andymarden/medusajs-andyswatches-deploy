@@ -18,8 +18,8 @@ systemctl cat "$SERVER_SERVICE" >/dev/null
 systemctl cat "$WORKER_SERVICE" >/dev/null
 
 echo "=== Stopping Medusa services if running ==="
-systemctl is-active --quiet "$WORKER_SERVICE" && systemctl stop "$WORKER_SERVICE" || true
-systemctl is-active --quiet "$SERVER_SERVICE" && systemctl stop "$SERVER_SERVICE" || true
+systemctl is-active --quiet "$WORKER_SERVICE" && sudo systemctl stop "$WORKER_SERVICE" || true
+systemctl is-active --quiet "$SERVER_SERVICE" && sudo systemctl stop "$SERVER_SERVICE" || true
 
 echo "=== Updating source ==="
 cd "$APP_DIR"
