@@ -1,6 +1,5 @@
 # !/usr/bin/env bash
 # medusajs backend build and deploy
-# Copy to /usr/local/sbin on the server
 set -euo pipefail
 
 APP_DIR="/srv/medusajs/andyswatches"
@@ -12,7 +11,7 @@ SERVER_SERVICE="medusajs-server"
 WORKER_SERVICE="medusajs-worker"
 
 echo "=== Reloading systemd ==="
-systemctl daemon-reload
+sudo systemctl daemon-reload
 
 echo "=== Checking services exist ==="
 systemctl cat "$SERVER_SERVICE" >/dev/null
@@ -24,16 +23,16 @@ systemctl is-active --quiet "$SERVER_SERVICE" && systemctl stop "$SERVER_SERVICE
 
 echo "=== Updating source ==="
 cd "$APP_DIR"
-sudo -u medusajs git pull --ff-only
+git pull --ff-only
 
 echo "=== Installing workspace dependencies ==="
-sudo -u medusajs corepack enable
-sudo -u medusajs corepack prepare pnpm@10.11.1 --activate
-sudo -u medusajs pnpm install --frozen-lockfile --force
+corepack enable
+corepack prepare pnpm@10.11.1 --activate
+pnpm install --frozen-lockfile --force
 
 echo "=== Building backend ==="
 cd "$BACKEND_DIR"
-sudo -u medusajs pnpm build
+pnpm build
 
 echo "=== Preparing production build ==="
 cd "$BUILD_DIR"
@@ -41,14 +40,11 @@ cp "$APP_DIR/pnpm-lock.yaml" .
 cp "$ENV_FILE" .env.production
 chmod 600 .env.production
 
-sudo -u medusajs pnpm install --prod --ignore-workspace ---no-frozen-lockfile --force
-
-echo "=== Setting ownership ==="
-chown -R medusajs:medusajs "$APP_DIR"
+pnpm install --prod --ignore-workspace ---no-frozen-lockfile --force
 
 echo "=== Starting Medusa services ==="
-systemctl start "$SERVER_SERVICE"
-systemctl start "$WORKER_SERVICE"
+sudo ystemctl start "$SERVER_SERVICE"
+sudo systemctl start "$WORKER_SERVICE"
 
 echo "=== Checking service status ==="
 systemctl is-active --quiet "$SERVER_SERVICE"
