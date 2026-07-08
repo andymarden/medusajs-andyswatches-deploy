@@ -1,0 +1,26 @@
+[Unit]
+Description=Medusa Storefront
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=medusajs
+Group=medusajs
+
+WorkingDirectory=/srv/medusajs/andyswatches/apps/storefront
+
+EnvironmentFile=/etc/medusajs/storefront.env
+Environment=HOME=/srv/medusajs
+Environment=XDG_CONFIG_HOME=/srv/medusajs/.config
+Environment=HOST=0.0.0.0
+Environment=PORT=8000
+Environment=NODE_ENV=production
+
+ExecStart=/usr/bin/pnpm start
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
