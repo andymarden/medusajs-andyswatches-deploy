@@ -5,7 +5,7 @@ APP_DIR="/srv/medusajs/andyswatches"
 STOREFRONT_DIR="$APP_DIR/apps/storefront"
 SERVICE="medusajs-storefront"
 
-sudo ystemctl daemon-reload
+sudo systemctl daemon-reload
 systemctl cat "$SERVICE" >/dev/null
 
 systemctl is-active --quiet "$SERVICE" && sudo systemctl stop "$SERVICE" || true
