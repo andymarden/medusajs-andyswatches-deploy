@@ -30,6 +30,10 @@ corepack enable
 corepack prepare pnpm@10.11.1 --activate
 pnpm install --frozen-lockfile --force
 
+echo "=== Preparing backend environment ==="
+cp "$ENV_FILE" "$BACKEND_DIR/.env.production"
+chmod 600 "$BACKEND_DIR/.env.production"
+
 echo "=== Building backend ==="
 cd "$BACKEND_DIR"
 pnpm build
@@ -37,7 +41,7 @@ pnpm build
 echo "=== Preparing production build ==="
 cd "$BUILD_DIR"
 cp "$APP_DIR/pnpm-lock.yaml" .
-cp "$ENV_FILE" .env.production
+cp "$BACKEND_DIR/.env.production" .
 chmod 600 .env.production
 
 pnpm install --prod --ignore-workspace ---no-frozen-lockfile --force
