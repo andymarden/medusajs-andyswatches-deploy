@@ -32,7 +32,9 @@ pnpm install --frozen-lockfile --force
 
 echo "=== Preparing backend environment ==="
 cp "$ENV_FILE" "$BACKEND_DIR/.env.production"
+cp "$ENV_FILE" "$BACKEND_DIR/.env"
 chmod 600 "$BACKEND_DIR/.env.production"
+chmod 600 "$BACKEND_DIR/.env"
 
 echo "=== Building backend ==="
 cd "$BACKEND_DIR"
