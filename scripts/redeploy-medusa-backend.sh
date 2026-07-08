@@ -43,7 +43,7 @@ chmod 600 .env.production
 pnpm install --prod --ignore-workspace ---no-frozen-lockfile --force
 
 echo "=== Starting Medusa services ==="
-sudo ystemctl start "$SERVER_SERVICE"
+sudo systemctl start "$SERVER_SERVICE"
 sudo systemctl start "$WORKER_SERVICE"
 
 echo "=== Checking service status ==="
