@@ -29,6 +29,23 @@ pnpm build
 sudo systemctl start "$SERVICE"
 systemctl is-active --quiet "$SERVICE"
 
-curl -f http://127.0.0.1:8000
+echo "=== Waiting for storefront ==="
+for i in {1..30}; do
+  if curl -fsS http://127.0.0.1:8000 >/dev/null; then
+    echo "Storefront is responding."
+    break
+  fi
+
+  if ! systemctl is-active --quiet "$SERVICE"; then
+    echo "Storefront service failed to start."
+    sudo systemctl status "$SERVICE" --no-pager -l
+    exit 1
+  fi
+
+  echo "Waiting for storefront... $i"
+  sleep 2
+done
+
+curl -fsS http://127.0.0.1:8000 >/dev/null
 echo
 echo "Storefront deployment complete."
